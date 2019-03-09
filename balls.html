@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Basic Three.js App</title>
+    <style>
+      html, body { margin: 0; padding: 0; overflow: hidden; }
+    </style>
+  </head>
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/102/three.min.js"></script>
+	<script src="Orbitcontrols.js"></script>
+    <script>
+		var time = 0
+		
+		var scene = new THREE.Scene();
+		var aspect = window.innerWidth / window.innerHeight;
+		var camera = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 );
+		var renderer = new THREE.WebGLRenderer();
+		var controls = new THREE.OrbitControls( camera );
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		document.body.appendChild( renderer.domElement );
+		var loader = new THREE.TextureLoader();
+				
+		var suntexture = loader.load("sun.jpg");
+        var suntexture2 = loader.load("maduro.jpg");
+		
+		
+		var sun_material = new THREE.MeshPhongMaterial({
+		  color: 0xaaaaaa,
+		  specular: 0x333333,
+		  shininess: 15,
+		  map: suntexture		  
+		});		
+		
+		
+		var sun_material2 = new THREE.MeshPhongMaterial({
+		  color: 0xaaaaaa,
+		  specular: 0x333333,
+		  shininess: 15,
+		  map: suntexture2		  
+		});		
+		//Sun
+		var geometrysun = new THREE.SphereGeometry( 2, 40, 40 );
+		var sun = new THREE.Mesh(geometrysun, sun_material);
+        sun.position.y = 30
+		scene.add(sun)
+
+        var geometrysun2 = new THREE.SphereGeometry( 2, 40, 40 );
+		var sun2 = new THREE.Mesh(geometrysun2, sun_material2);
+        sun2.position.y = 30
+        sun2.position.x = 10
+		scene.add(sun2)
+
+        var geometrypared = new THREE.BoxGeometry( 1, 40, 40 );
+        var material = new THREE.MeshNormalMaterial();
+        var wall1 = new THREE.Mesh(geometrypared, material)
+        wall1.position.x = 20
+        scene.add(wall1)
+
+        var geometrypared2 = new THREE.BoxGeometry( 1, 40, 40 );
+        var material2 = new THREE.MeshNormalMaterial();
+        var wall2 = new THREE.Mesh(geometrypared2, material2)
+        wall2.position.x = -20
+        scene.add(wall2)
+
+		//Camera & Light
+		camera.position.z = 60;
+		var light = new THREE.AmbientLight(0xffffff);
+		
+		
+        let g_aceletation = [0,-9.81,0]
+        var speed = [0,0,0]
+        var speed2 = [0,0,0]
+        var timelap = 0.05
+        var timelap2 = 0.04
+		scene.add(light)
+		var render = function () {
+			requestAnimationFrame( render );
+			controls.update();
+			
+            speed[0] += g_aceletation[0] * timelap 
+            speed[1] += g_aceletation[1] * timelap
+            speed[2] += g_aceletation[2] * timelap
+			
+            
+            speed2[0] += g_aceletation[0] * timelap2
+            speed2[1] += g_aceletation[1] * timelap2
+            speed2[2] += g_aceletation[2] * timelap2
+
+			sun.position.x += speed[0] * timelap
+            sun.position.y += speed[1] * timelap
+            sun.position.z += speed[2] * timelap
+
+            sun2.position.x += speed2[0] * timelap2
+            sun2.position.y += speed2[1] * timelap2
+            sun2.position.z += speed2[2] * timelap2
+
+            time += timelap
+            if (sun.position.y < -20){
+                console.log(speed[1])
+                speed[1] = 27.958500000000033
+            }
+            if (sun.position.x > 18){
+                speed[0]*=-1
+            }
+            if (sun.position.x < -18){
+                speed[0]*=-1
+            }
+
+            if (sun2.position.y < -20){
+                console.log(speed2[1])
+                speed2[1] = 27.958500000000033
+            }
+            if (sun2.position.x > 18){
+                speed2[0]*=-1
+            }
+            if (sun2.position.x < -18){
+                speed2[0]*=-1
+            }
+
+            var distance = distanceVector(sun.position, sun2.position)
+            if (distance < 2){
+                console.log("CHOQUE DE REYES")
+                var dx = speed[0]//sun.position.x - sun2.position.x;
+                var dy = speed[1]//sun.position.y - sun2.position.y;
+                var dz = speed[2]//sun.position.z - sun2.position.z;
+                speed[0] *= -1
+                speed[1] *= -1
+                speed[2] *= -1
+                speed2[0] *= -1
+                speed2[1] *= -1
+                speed2[2] *= -1
+
+
+            }
+            
+			renderer.render( scene, camera );
+		};
+		render();
+		
+		document.addEventListener("keydown", onDocumentKeyDown, false);
+		function onDocumentKeyDown(event) {
+			var keyCode = event.which;
+			if (keyCode == 87) { // W
+				camera.position.z -= 1;
+			} else if (keyCode == 83) { //S
+				camera.position.z += 1;
+			} else if (keyCode == 65) { // A
+				//sun.position.x -= 1;
+                speed[0] -= 1
+                speed2[0] += 1
+			} else if (keyCode == 68) { // D
+				//sun.position.x += 1;
+                speed[0] += 1
+                speed2[0]-=1
+			} else if (keyCode == 69) { // E
+				camera.position.y -= 1;
+			} else if (keyCode == 81) { // Q
+				camera.position.y += 1;
+			} else if (keyCode == 90) { // Z
+				camera.rotation.y += 0.01;
+			} else if (keyCode == 67) { // C 
+				camera.rotation.y -= 0.01;
+			}
+		};
+
+        function distanceVector( v1, v2 )
+        {
+            var dx = v1.x - v2.x;
+            var dy = v1.y - v2.y;
+            var dz = v1.z - v2.z;
+
+            return Math.sqrt( dx * dx + dy * dy + dz * dz );
+        }
+    </script>
+  </body>
+</html>
