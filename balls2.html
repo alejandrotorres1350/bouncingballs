@@ -40,31 +40,45 @@
 		  map: suntexture2		  
 		});		
 		//Sun
+        var sunRadio = 2;
 		var geometrysun = new THREE.SphereGeometry( 2, 40, 40 );
 		var sun = new THREE.Mesh(geometrysun, sun_material);
         sun.position.y = 30
 		scene.add(sun)
 
-        var geometrysun2 = new THREE.SphereGeometry( 2, 40, 40 );
-		var sun2 = new THREE.Mesh(geometrysun2, sun_material2);
-        sun2.position.y = 30
-        sun2.position.x = 10
-		scene.add(sun2)
-
-        var geometrypared = new THREE.BoxGeometry( 1, 40, 40 );
+        var geometrypared = new THREE.BoxGeometry( 40, 1, 40 );
         var material = new THREE.MeshNormalMaterial();
         var wall1 = new THREE.Mesh(geometrypared, material)
-        wall1.position.x = 20
+        wall1.position.x = 0
+        wall1.position.y = -20
         scene.add(wall1)
 
-        var geometrypared2 = new THREE.BoxGeometry( 1, 40, 40 );
+        var geometrypared2 = new THREE.BoxGeometry( 40, 1, 40 );
         var material2 = new THREE.MeshNormalMaterial();
         var wall2 = new THREE.Mesh(geometrypared2, material2)
-        wall2.position.x = -20
+        wall2.position.x = -40
+        wall2.position.y = -20
         scene.add(wall2)
 
+        var geometrypared3 = new THREE.BoxGeometry( 1, 80, 40 );
+        var material3 = new THREE.MeshNormalMaterial();
+        var wall3 = new THREE.Mesh(geometrypared3, material3)
+        wall3.position.x = 20
+        wall3.position.y = 0
+        scene.add(wall3)
+
+        var geometrypared4 = new THREE.BoxGeometry( 1, 80, 40 );
+        var material4 = new THREE.MeshNormalMaterial();
+        var wall4 = new THREE.Mesh(geometrypared4, material4)
+        wall4.position.x = -60
+        wall4.position.y = 0
+        scene.add(wall4)
+
+
+
 		//Camera & Light
-		camera.position.z = 60;
+		camera.position.z = 80;
+        camera.position.x = -10;
 		var light = new THREE.AmbientLight(0xffffff);
 		
 		
@@ -77,68 +91,43 @@
 		var render = function () {
 			requestAnimationFrame( render );
 			controls.update();
-			
+
             speed[0] += g_aceletation[0] * timelap 
             speed[1] += g_aceletation[1] * timelap
             speed[2] += g_aceletation[2] * timelap
-			
-            
-            speed2[0] += g_aceletation[0] * timelap2
-            speed2[1] += g_aceletation[1] * timelap2
-            speed2[2] += g_aceletation[2] * timelap2
 
-			sun.position.x += speed[0] * timelap
-            sun.position.y += speed[1] * timelap
-            sun.position.z += speed[2] * timelap
-
-            sun2.position.x += speed2[0] * timelap2
-            sun2.position.y += speed2[1] * timelap2
-            sun2.position.z += speed2[2] * timelap2
-
+			sun.position.x += speed[0] * timelap;
+            sun.position.y += speed[1] * timelap;
+            sun.position.z += speed[2] * timelap;
             time += timelap
-            if (sun.position.y < -20){
-                console.log(speed[1])       
-                speed[1] = 27.958500000000033
-            }
-            if (sun.position.x > 18){
-                speed[0]*=-1
-            }
-            if (sun.position.x < -18){
-                speed[0]*=-1
-            }
+			
+            let raycaster = new THREE.Raycaster();
+            raycaster.set(sun.position, new THREE.Vector3(0,-1.0,0));
+            let intersects = raycaster.intersectObjects(scene.children, true);
 
-            if (sun2.position.y < -20){
-                console.log(speed2[1])
-                speed2[1] = 27.958500000000033
-            }
-            if (sun2.position.x > 18){
-                speed2[0]*=-1
-            }
-            if (sun2.position.x < -18){
-                speed2[0]*=-1
-            }
+            let raycaster2 = new THREE.Raycaster();
+            raycaster2.set(sun.position, new THREE.Vector3(1,0,0));
+            let intersects2 = raycaster2.intersectObjects(scene.children, true);
 
-            var distance = distanceVector(sun.position, sun2.position)
-            if (distance < 2){
-                console.log("CHOQUE DE REYES")
-                var dx = speed[0]//sun.position.x - sun2.position.x;
-                var dy = speed[1]//sun.position.y - sun2.position.y;
-                var dz = speed[2]//sun.position.z - sun2.position.z;
-                if(speed[1] * speed2[1] < 0)
-                {
-                    speed[1] *= -1
-                    speed2[1] *= -1
+            let raycaster3 = new THREE.Raycaster();
+            raycaster3.set(sun.position, new THREE.Vector3(-1,0,0));
+            let intersects3 = raycaster3.intersectObjects(scene.children, true);
+
+            if(intersects.length > 0){
+                if(intersects[0].distance < sunRadio){
+                    speed[1] = Math.abs(speed[1]);
                 }
-                if(speed[0] * speed2[0] < 0)
-                {
-                    speed[0] *= -1.5
-                    speed2[0] *= -1.5
-                }
-                speed[2] *= -1
-                speed2[2] *= -1
-
-
             }
+
+            if(sun.position.x - wall3.position.x > -sunRadio){
+                    speed[0] = -Math.abs(speed[0]);
+                }
+            
+            if(sun.position.x - wall4.position.x < sunRadio){
+                    speed[0] = Math.abs(speed[0]);
+                    
+                }
+            
             
 			renderer.render( scene, camera );
 		};
