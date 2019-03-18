@@ -122,8 +122,10 @@
 
             if(intersects.length > 0){
                 if(intersects[0].distance < sunRadio){
-                    speed[1] = Math.abs(speed[1]);
-                }
+					speed[1] = 27.468000000000032
+                    //speed[1] = Math.abs(speed[1] * 1.0);
+					//console.log(speed[1])
+                 }
             }
 
             if(sun.position.x - wall3.position.x > -sunRadio){
