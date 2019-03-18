@@ -49,36 +49,43 @@
         var geometrypared = new THREE.BoxGeometry( 40, 1, 40 );
         var material = new THREE.MeshNormalMaterial();
         var wall1 = new THREE.Mesh(geometrypared, material)
-        wall1.position.x = 0
+        wall1.position.x = -40
         wall1.position.y = -20
         scene.add(wall1)
 
-        var geometrypared2 = new THREE.BoxGeometry( 40, 1, 40 );
-        var material2 = new THREE.MeshNormalMaterial();
-        var wall2 = new THREE.Mesh(geometrypared2, material2)
-        wall2.position.x = -40
-        wall2.position.y = -20
-        scene.add(wall2)
 
+		for (var i = 0; i<= 50; i++){
+					
+			var geometrypared2 = new THREE.BoxGeometry( 40, 1, 40 );
+			var material2 = new THREE.MeshNormalMaterial();
+			var wall2 = new THREE.Mesh(geometrypared2, material2)
+			wall2.position.x = 40*i
+			wall2.position.y = (Math.random() * 40 ) - 20
+			wall2.position.z = 0
+			scene.add(wall2)
+		
+		}
+		
         var geometrypared3 = new THREE.BoxGeometry( 1, 80, 40 );
         var material3 = new THREE.MeshNormalMaterial();
         var wall3 = new THREE.Mesh(geometrypared3, material3)
-        wall3.position.x = 20
-        wall3.position.y = 0
+        wall3.position.x = 40 * 50 + 20
+        wall3.position.y = 20
         scene.add(wall3)
 
         var geometrypared4 = new THREE.BoxGeometry( 1, 80, 40 );
         var material4 = new THREE.MeshNormalMaterial();
         var wall4 = new THREE.Mesh(geometrypared4, material4)
         wall4.position.x = -60
-        wall4.position.y = 0
+        wall4.position.y = 20
         scene.add(wall4)
 
 
 
 		//Camera & Light
-		camera.position.z = 80;
-        camera.position.x = -10;
+		camera.position.z = 200;
+        camera.position.x = -20;
+		camera.position.y = 40
 		var light = new THREE.AmbientLight(0xffffff);
 		
 		
@@ -128,7 +135,9 @@
                     
                 }
             
-            
+            camera.position.x = sun.position.x
+			camera.position.z = 200
+			camera.lookAt(sun.position)
 			renderer.render( scene, camera );
 		};
 		render();
