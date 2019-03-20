@@ -9,6 +9,7 @@
   <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/102/three.min.js"></script>
 	<script src="Orbitcontrols.js"></script>
+	
     <script>
 		var time = 0
 		
@@ -44,32 +45,33 @@
 		var geometrysun = new THREE.SphereGeometry( 2, 40, 40 );
 		var sun = new THREE.Mesh(geometrysun, sun_material);
         sun.position.y = 30
+		sun.position.x = -40
 		scene.add(sun)
 
         var geometrypared = new THREE.BoxGeometry( 40, 1, 40 );
         var material = new THREE.MeshNormalMaterial();
         var wall1 = new THREE.Mesh(geometrypared, material)
         wall1.position.x = -40
-        wall1.position.y = -20
+        wall1.position.y = (Math.random() * 40 ) - 20
         scene.add(wall1)
 
-
-		for (var i = 0; i<= 50; i++){
+		var finalx = 0
+		for (var i = 1; i<= 50; i++){
 					
 			var geometrypared2 = new THREE.BoxGeometry( 40, 1, 40 );
 			var material2 = new THREE.MeshNormalMaterial();
 			var wall2 = new THREE.Mesh(geometrypared2, material2)
-			wall2.position.x = 40*i
+			wall2.position.x = (100 * i)
 			wall2.position.y = (Math.random() * 40 ) - 20
 			wall2.position.z = 0
 			scene.add(wall2)
-		
+			finalx = wall2.position.x
 		}
 		
         var geometrypared3 = new THREE.BoxGeometry( 1, 80, 40 );
         var material3 = new THREE.MeshNormalMaterial();
         var wall3 = new THREE.Mesh(geometrypared3, material3)
-        wall3.position.x = 40 * 50 + 20
+        wall3.position.x = finalx + 20
         wall3.position.y = 20
         scene.add(wall3)
 
@@ -95,9 +97,13 @@
         var timelap = 0.05
         var timelap2 = 0.04
 		scene.add(light)
+		var passed = 0;
+				
+		
 		var render = function () {
 			requestAnimationFrame( render );
 			controls.update();
+						
 
             speed[0] += g_aceletation[0] * timelap 
             speed[1] += g_aceletation[1] * timelap
@@ -123,18 +129,46 @@
 			let raycaster4 = new THREE.Raycaster();
             raycaster4.set(sun.position, new THREE.Vector3(0,1,0));
             let intersects4 = raycaster4.intersectObjects(scene.children, true);
+			
+			let raycaster5 = new THREE.Raycaster();
+            raycaster5.set(sun.position, new THREE.Vector3(1,-1,0));
+            let intersects5 = raycaster5.intersectObjects(scene.children, true);
+			
+			let raycaster6 = new THREE.Raycaster();
+            raycaster6.set(sun.position, new THREE.Vector3(-1,-1,0));
+            let intersects6 = raycaster6.intersectObjects(scene.children, true);
 
             if(intersects.length > 0){
                 if(intersects[0].distance < sunRadio){
 					speed[1] = 27.468000000000032
                     //speed[1] = Math.abs(speed[1] * 1.0);
 					//console.log(speed[1])
+					passed++;
+					textnumber(passed)
                  }
             }
 			
 			if(intersects4.length > 0){
                 if(intersects4[0].distance < sunRadio){
 					speed[1] = Math.abs(speed[1]) * -1;					
+                 }
+            }
+			
+			if(intersects5.length > 0){
+                if(intersects5[0].distance < sunRadio){
+					speed[1] = 27.468000000000032
+					passed++;
+					textnumber(passed)
+					//speed[1] = Math.abs(speed[1]) * -1;					
+                 }
+            }
+			
+			if(intersects6.length > 0){
+                if(intersects6[0].distance < sunRadio){
+					speed[1] = 27.468000000000032
+					passed++;
+					textnumber(passed)
+					//speed[1] = Math.abs(speed[1]) * -1;					
                  }
             }
 
@@ -146,6 +180,7 @@
                     speed[0] = Math.abs(speed[0]);
                     
                 }
+
             
             camera.position.x = sun.position.x
 			camera.position.z = 200
@@ -154,7 +189,7 @@
 		};
 		render();
 		
-		document.addEventListener("keydown", onDocumentKeyDown, false);
+		document.addEventListener("keydown", onDocumentKeyDown, false);		
 		function onDocumentKeyDown(event) {
 			var keyCode = event.which;
 			if (keyCode == 87) { // W
@@ -179,6 +214,10 @@
 				camera.rotation.y -= 0.01;
 			}
 		};
+		
+		function textnumber(passed){
+			console.log(passed)
+		}		
 
         function distanceVector( v1, v2 )
         {
