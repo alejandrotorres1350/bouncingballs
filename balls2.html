@@ -12,7 +12,6 @@
 	
     <script>
 		var time = 0
-		
 		var scene = new THREE.Scene();
 		var aspect = window.innerWidth / window.innerHeight;
 		var camera = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 );
@@ -142,7 +141,6 @@
                 if(intersects[0].distance < sunRadio){
 					speed[1] = 27.468000000000032
                     //speed[1] = Math.abs(speed[1] * 1.0);
-					//console.log(speed[1])
 					passed++;
 					textnumber(passed)
                  }
@@ -167,7 +165,6 @@
                 if(intersects6[0].distance < sunRadio){
 					speed[1] = 27.468000000000032
 					passed++;
-					textnumber(passed)
 					//speed[1] = Math.abs(speed[1]) * -1;					
                  }
             }
@@ -213,11 +210,7 @@
 			} else if (keyCode == 67) { // C 
 				camera.rotation.y -= 0.01;
 			}
-		};
-		
-		function textnumber(passed){
-			console.log(passed)
-		}		
+		};	
 
         function distanceVector( v1, v2 )
         {
