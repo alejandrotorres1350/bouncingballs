@@ -23,6 +23,8 @@
 				
 		var suntexture = loader.load("sun.jpg");
         var suntexture2 = loader.load("maduro.jpg");
+		var rocktexture = loader.load("rock.jpg")
+		var starttexture = loader.load("sphere.png")
 		
 		
 		var sun_material = new THREE.MeshPhongMaterial({
@@ -39,49 +41,167 @@
 		  shininess: 15,
 		  map: suntexture2		  
 		});		
-		//Sun
-        var sunRadio = 2;
-		var geometrysun = new THREE.SphereGeometry( 2, 40, 40 );
-		var sun = new THREE.Mesh(geometrysun, sun_material);
-        sun.position.y = 30
-		sun.position.x = -40
-		scene.add(sun)
+
+		var rock_material = new THREE.MeshPhongMaterial({
+		  color: 0xaaaaaa,
+		  specular: 0x333333,
+		  shininess: 15,
+		  map: rocktexture		  
+		})
+
+		var meta_material = new THREE.MeshPhongMaterial({
+		  color: 0xaaaaaa,
+		  specular: 0x333333,
+		  shininess: 15,
+		  map: starttexture		  
+		})
 
         var geometrypared = new THREE.BoxGeometry( 40, 1, 40 );
-        var material = new THREE.MeshNormalMaterial();
-        var wall1 = new THREE.Mesh(geometrypared, material)
+        //var material = new THREE.MeshNormalMaterial();
+        var wall1 = new THREE.Mesh(geometrypared, rock_material)
         wall1.position.x = -40
         wall1.position.y = (Math.random() * 40 ) - 20
         scene.add(wall1)
 
 		var finalx = 0
 		for (var i = 1; i<= 50; i++){
-					
-			var geometrypared2 = new THREE.BoxGeometry( 40, 1, 40 );
-			var material2 = new THREE.MeshNormalMaterial();
-			var wall2 = new THREE.Mesh(geometrypared2, material2)
-			wall2.position.x = (100 * i)
-			wall2.position.y = (Math.random() * 40 ) - 20
-			wall2.position.z = 0
-			scene.add(wall2)
-			finalx = wall2.position.x
+
+			if(i == 1){
+				var geometrypared2 = new THREE.BoxGeometry( 40, 1, 40 );
+				//var material2 = new THREE.MeshNormalMaterial();
+				var wall2 = new THREE.Mesh(geometrypared2, rock_material)
+				wall2.position.x = (100 * i)
+				wall2.position.y = 40
+				wall2.position.z = 0
+				scene.add(wall2)
+				finalx = wall2.position.x
+			}else{
+				var geometrypared2 = new THREE.BoxGeometry( 40, 1, 40 );
+				//var material2 = new THREE.MeshNormalMaterial();
+				var wall2 = new THREE.Mesh(geometrypared2, rock_material)
+				wall2.position.x = (100 * i)
+				wall2.position.y = (Math.random() * 40 ) - 20
+				wall2.position.z = 0
+				scene.add(wall2)
+				finalx = wall2.position.x
+			}
+			
 		}
+
+		var yvalue = 60
+		for (var i = 49; i>= 0; i--){
+			if(i == 49){
+				var geometrypared5 = new THREE.BoxGeometry( 40, 1, 40 );
+				//var material2 = new THREE.MeshNormalMaterial();
+				var wall5 = new THREE.Mesh(geometrypared5, rock_material)
+				wall5.position.x = (100 * i)
+				wall5.position.y = 40
+				wall5.position.z = 0
+				scene.add(wall5)
+				//finalx = wall2.position.x
+			}else{
+				var geometrypared5 = new THREE.BoxGeometry( 40, 1, 40 );
+				//var material2 = new THREE.MeshNormalMaterial();
+				var wall5 = new THREE.Mesh(geometrypared5, rock_material)
+				wall5.position.x = (100 * i)
+				wall5.position.y = yvalue
+				wall5.position.z = 0
+				scene.add(wall5)
+				//finalx = wall2.position.x
+				yvalue+=20
+			}
+		}
+		var geometrypared7 = new THREE.BoxGeometry( 40, 1, 40 );
+		//var material2 = new THREE.MeshNormalMaterial();
+		var wall7 = new THREE.Mesh(geometrypared7, rock_material)
+		wall7.position.x = -40
+		wall7.position.y = yvalue - 20
+		wall7.position.z = 0
+		scene.add(wall7)
+		//finalx = wall2.position.x
+
 		
         var geometrypared3 = new THREE.BoxGeometry( 1, 80, 40 );
         var material3 = new THREE.MeshNormalMaterial();
-        var wall3 = new THREE.Mesh(geometrypared3, material3)
+        var wall3 = new THREE.Mesh(geometrypared3, meta_material)
         wall3.position.x = finalx + 20
         wall3.position.y = 20
         scene.add(wall3)
 
+		var geometrypared6 = new THREE.BoxGeometry( 1, 80, 40 );
+        var wall6 = new THREE.Mesh(geometrypared3, meta_material)
+        wall6.position.x = -60
+        wall6.position.y = yvalue
+        scene.add(wall6)
+
         var geometrypared4 = new THREE.BoxGeometry( 1, 80, 40 );
         var material4 = new THREE.MeshNormalMaterial();
-        var wall4 = new THREE.Mesh(geometrypared4, material4)
+        var wall4 = new THREE.Mesh(geometrypared4, meta_material)
         wall4.position.x = -60
         wall4.position.y = 20
         scene.add(wall4)
 
 
+		var finalxy = 0
+		for (var i = 1; i<= 50; i++){
+
+			if(i == 1){
+				var geometrypared8 = new THREE.BoxGeometry( 40, 1, 40 );
+				//var material2 = new THREE.MeshNormalMaterial();
+				var wall8 = new THREE.Mesh(geometrypared8, rock_material)
+				wall8.position.x = (100 * i)
+				wall8.position.y = yvalue + 20
+				wall8.position.z = 0
+				scene.add(wall8)
+			}else if (i == 50){
+				var geometrypared8 = new THREE.BoxGeometry( 40, 1, 40 );
+				//var material2 = new THREE.MeshNormalMaterial();
+				var wall8 = new THREE.Mesh(geometrypared8, rock_material)
+				wall8.position.x = (100 * i)
+				wall8.position.y = yvalue - 10
+				wall8.position.z = 0
+				scene.add(wall8)
+			}
+			else{
+				var geometrypared8 = new THREE.BoxGeometry( 40, 1, 40 );
+				//var material2 = new THREE.MeshNormalMaterial();
+				var wall8 = new THREE.Mesh(geometrypared8, rock_material)
+				wall8.position.x = (100 * i)
+				wall8.position.y = (Math.random() * 60 ) + yvalue
+				wall8.position.z = 0
+				scene.add(wall8)
+			}
+			
+			
+		}
+
+		var geometrypared9 = new THREE.BoxGeometry( 1, 80, 40 );
+        var wall9 = new THREE.Mesh(geometrypared9, meta_material)
+        wall9.position.x = finalx + 20
+        wall9.position.y = yvalue
+        scene.add(wall9)
+
+		//Sun
+        var sunRadio = 2;
+		var geometrysun = new THREE.SphereGeometry( 2, 40, 40 );
+		var sun = new THREE.Mesh(geometrysun, sun_material);
+        sun.position.y = 30
+		sun.position.x = -40
+
+		var startpositionX = sun.position.x
+		var startpositionY = sun.position.y
+		scene.add(sun)
+
+		var checkpoitn1X = finalx 
+		var checkpoitn1Y = 30
+
+		var checkpoitn2X = -40 
+		var checkpoitn2Y = yvalue + 20
+
+		var finalgoalx = finalx 
+		var finalgoaly = yvalue + 20
+
+		var actualcheckpoint = [startpositionX, startpositionY]
 
 		//Camera & Light
 		camera.position.z = 200;
@@ -102,7 +222,11 @@
 		var render = function () {
 			requestAnimationFrame( render );
 			controls.update();
-						
+
+
+			if (sun.position.y < -50){	
+				changeCheckpoint()
+			}		
 
             speed[0] += g_aceletation[0] * timelap 
             speed[1] += g_aceletation[1] * timelap
@@ -142,7 +266,6 @@
 					speed[1] = 27.468000000000032
                     //speed[1] = Math.abs(speed[1] * 1.0);
 					passed++;
-					textnumber(passed)
                  }
             }
 			
@@ -156,7 +279,6 @@
                 if(intersects5[0].distance < sunRadio){
 					speed[1] = 27.468000000000032
 					passed++;
-					textnumber(passed)
 					//speed[1] = Math.abs(speed[1]) * -1;					
                  }
             }
@@ -180,6 +302,7 @@
 
             
             camera.position.x = sun.position.x
+			camera.position.y = sun.position.y
 			camera.position.z = 200
 			camera.lookAt(sun.position)
 			renderer.render( scene, camera );
@@ -209,8 +332,30 @@
 				camera.rotation.y += 0.01;
 			} else if (keyCode == 67) { // C 
 				camera.rotation.y -= 0.01;
+			} else if (keyCode == 97 || keyCode == 49){
+				actualcheckpoint = [startpositionX, startpositionY]
+				changeCheckpoint()
+			} else if (keyCode == 98 || keyCode == 50){
+				actualcheckpoint = [checkpoitn1X, checkpoitn1Y]
+				changeCheckpoint()
+			}else if (keyCode == 99 || keyCode == 51){
+				actualcheckpoint = [checkpoitn2X, checkpoitn2Y]
+				changeCheckpoint()
+			}else if (keyCode == 100 || keyCode == 52){
+				actualcheckpoint = [finalgoalx, finalgoaly]
+				changeCheckpoint()
 			}
 		};	
+
+		function changeCheckpoint(){
+			sun.position.x = actualcheckpoint[0]
+			sun.position.y = actualcheckpoint[1]
+			speed = [0,0,0]
+			speed2 = [0,0,0]
+			timelap = 0.05
+			timelap2 = 0.04
+			passed = 0;
+		}
 
         function distanceVector( v1, v2 )
         {
