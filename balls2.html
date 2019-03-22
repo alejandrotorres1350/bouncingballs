@@ -11,6 +11,7 @@
 	<script src="Orbitcontrols.js"></script>
 	
     <script>
+		var background = true
 		var time = 0
 		var scene = new THREE.Scene();
 		var aspect = window.innerWidth / window.innerHeight;
@@ -20,12 +21,14 @@
 		renderer.setSize( window.innerWidth, window.innerHeight );
 		document.body.appendChild( renderer.domElement );
 		var loader = new THREE.TextureLoader();
-				
-		var suntexture = loader.load("sun.jpg");
-        var suntexture2 = loader.load("maduro.jpg");
+		var suntexture = loader.load("ball2.png");
+        var suntexture2 = loader.load("wall.png");
 		var rocktexture = loader.load("rock.jpg")
 		var starttexture = loader.load("sphere.png")
+
 		
+		
+		scene.background = suntexture2
 		
 		var sun_material = new THREE.MeshPhongMaterial({
 		  color: 0xaaaaaa,
@@ -182,8 +185,8 @@
         scene.add(wall9)
 
 		//Sun
-        var sunRadio = 2;
-		var geometrysun = new THREE.SphereGeometry( 2, 40, 40 );
+        var sunRadio = 4;
+		var geometrysun = new THREE.SphereGeometry( 4, 40, 40 );
 		var sun = new THREE.Mesh(geometrysun, sun_material);
         sun.position.y = 30
 		sun.position.x = -40
@@ -223,6 +226,7 @@
 			requestAnimationFrame( render );
 			controls.update();
 
+			sun.rotation.y += 0.05
 
 			if (sun.position.y < -50){	
 				changeCheckpoint()
@@ -355,6 +359,13 @@
 			timelap = 0.05
 			timelap2 = 0.04
 			passed = 0;
+			if (background == true){
+				//scene.background = new THREE.Color( 0x000000 );
+				background = false
+			}else{
+				//scene.background = new THREE.Color( 0xf0f0f0 );	
+				background = true
+			}
 		}
 
         function distanceVector( v1, v2 )
