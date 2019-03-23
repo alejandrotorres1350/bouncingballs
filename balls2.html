@@ -23,8 +23,23 @@
 		var loader = new THREE.TextureLoader();
 		var suntexture = loader.load("ball2.png");
         var suntexture2 = loader.load("wall.png");
-		var rocktexture = loader.load("rock.jpg")
+		var rocktexture = loader.load("maduro.jpg")
 		var starttexture = loader.load("sphere.png")
+		// create an AudioListener and add it to the camera
+		var listener = new THREE.AudioListener();
+		camera.add( listener );
+
+		// create the PositionalAudio object (passing in the listener)
+		var sound = new THREE.PositionalAudio( listener );
+
+		// load a sound and set it as the PositionalAudio object's buffer
+		var audioLoader = new THREE.AudioLoader();
+		audioLoader.load( 'song.mp3', function( buffer ) {
+			sound.setBuffer( buffer );
+			sound.setRefDistance( 20 );
+			sound.setLoop(true)
+			sound.play();
+		});
 
 		
 		
